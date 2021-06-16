@@ -54,6 +54,8 @@ class PreloadScene extends Phaser.Scene {
 
         //load music
         //EXAMPLE: this.load.audio("Title", './assets/audio/bgm/Title.wav');
+        this.load.audio("Battle", './assets/audio/bgm/BattleTheme.mp3');
+        this.load.audio("Home", './.assets/audio.bgm/HomeTheme.mp3');
 
         //load sfx
         //EXAMPLE: this.load.audio("laser", "./assets/audio/sfx/laser.mp3");
