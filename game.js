@@ -20,7 +20,7 @@ const config = {
     scene: [
         PreloadScene,
         TitleScene,
-        TamagatchiScene,
+        TamagachiScene,
         BattleScene
     ],
     physics: {
