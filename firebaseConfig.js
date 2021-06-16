@@ -1,8 +1,8 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyCbQPYvFmb_tdXVs_usD9ajSKoDzF_AIyk",
-    authDomain: "galaxy-warrior-9001.firebaseapp.com",
-    projectId: "galaxy-warrior-9001",
-    storageBucket: "galaxy-warrior-9001.appspot.com",
-    messagingSenderId: "758273388748",
-    appId: "1:758273388748:web:aa27c739d89776756a1269"
+    apiKey: "AIzaSyBYzZtcoU2vKqAPzGckbMZ-mjo9MA5dITc",
+    authDomain: "tamagachibattler.firebaseapp.com",
+    projectId: "tamagachibattler",
+    storageBucket: "tamagachibattler.appspot.com",
+    messagingSenderId: "1093945818343",
+    appId: "1:1093945818343:web:8faf6f4c21f29dd0ef3642"
 };
