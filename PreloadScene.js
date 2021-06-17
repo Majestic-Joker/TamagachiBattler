@@ -67,6 +67,10 @@ class PreloadScene extends Phaser.Scene {
         
 
         //load sprites
+        this.load.spritesheet('house', './assets/visual/bg/house.png', {
+            frameWidth: 450,
+            frameHeight: 800
+        })
         /*
         EXAMPLE:
         this.load.spritesheet('player', './assets/visual/ships/player.png', {

@@ -9,6 +9,7 @@ class TamagachiScene extends Phaser.Scene {
         this.wall = null
         this.couch = null
         this.table = null
+        this.house
     }
 
     update () {
@@ -22,6 +23,9 @@ class TamagachiScene extends Phaser.Scene {
         });
         //play audio
         homeBGM.play();
+        // Create house
+        this.house = this.add.sprite(225,400,'house')
+        this.house.setScale(10)
         //make a button for title scene
         let titleBtn = this.add.rectangle(225,400, 200, 100, 0x0000FF);
             titleBtn.setOrigin(.5);
