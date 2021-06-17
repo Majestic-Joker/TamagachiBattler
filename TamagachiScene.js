@@ -5,6 +5,10 @@ class TamagachiScene extends Phaser.Scene {
         this.happines = null;
         this.clean = null;
         this.name = 'Gary';
+        this.floor = null
+        this.wall = null
+        this.couch = null
+        this.table = null
     }
 
     update () {
