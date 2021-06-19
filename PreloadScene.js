@@ -65,7 +65,7 @@ class PreloadScene extends Phaser.Scene {
         //EXAMPLE: this.load.image('bg', './assets/visual/bg/pBG1.png');
         this.load.image('Bar-HP', './assets/visual/gui/barHealth.png');
         this.load.image('Bar-Overlay', './assets/visual/gui/barOverlay.png');
-
+        this.load.image('Bar-Essence', './assets/visual/gui/barEssence.png');
         
 
         //load sprites
@@ -99,6 +99,7 @@ class PreloadScene extends Phaser.Scene {
             percentText.destroy();
             assetText.destroy();
         });
+
     }
     create(){
         //start the title scene
