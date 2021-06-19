@@ -99,7 +99,6 @@ class PreloadScene extends Phaser.Scene {
             percentText.destroy();
             assetText.destroy();
         });
-
     }
     create(){
         //start the title scene
