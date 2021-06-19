@@ -66,21 +66,16 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('Bar-HP', './assets/visual/gui/barHealth.png');
         this.load.image('Bar-Overlay', './assets/visual/gui/barOverlay.png');
         this.load.image('Bar-Essence', './assets/visual/gui/barEssence.png');
-        
+        this.load.image('house', './assets/visual/bg/house.png');
 
         //load sprites
-        this.load.spritesheet('house', './assets/visual/bg/house.png', {
-            frameWidth: 450,
-            frameHeight: 800
-        })
-        /*
-        EXAMPLE:
+        /*EXAMPLE:
         this.load.spritesheet('player', './assets/visual/ships/player.png', {
             frameWidth: 130,
             frameHeight: 130
         });
         */
-        
+
         //create loading progress
         this.load.on('progress', function (percentage) {
             percentText.setText(parseInt(percentage * 100) + '%');
