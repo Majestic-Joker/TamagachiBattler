@@ -72,11 +72,11 @@ class TamagachiScene extends Phaser.Scene {
         })
 
         // Create bars for hunger, cleanliness, happiness
-        this.hungerBar =  this.add.rectangle(37, 105, 100, 10, 0xAAAAAA);
+        this.hungerBar =  this.add.rectangle(37, 105, 100, 10, 0x5BA150);
         this.hungerBar.setOrigin(0)
-        this.happinessBar = this.add.rectangle(37, 120, 100, 10, 0xAAAAAA);
+        this.happinessBar = this.add.rectangle(37, 120, 100, 10, 0x5BA150);
         this.happinessBar.setOrigin(0)
-        this.cleanBar = this.add.rectangle(37, 135, 100, 10, 0xAAAAAA);
+        this.cleanBar = this.add.rectangle(37, 135, 100, 10, 0x5BA150);
         this.cleanBar.setOrigin(0)
     }
 
@@ -87,7 +87,7 @@ class TamagachiScene extends Phaser.Scene {
         this.energy++
         this.lastDegrade = this.getNow()
         console.log(this.hunger)
-        console.log(this.happines)
+        console.log(this.happiness)
         console.log(this.clean)
     }
 
@@ -99,7 +99,6 @@ class TamagachiScene extends Phaser.Scene {
         this.hungerBar.setScale(this.hunger / 100, 1)
         this.happinessBar.setScale(this.happiness / 100, 1) 
         this.cleanBar.setScale(this.clean / 100, 1)
-    }
-    
+    }    
 
 }
