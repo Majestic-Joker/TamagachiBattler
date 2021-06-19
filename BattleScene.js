@@ -1,6 +1,13 @@
 class BattleScene extends Phaser.Scene {
     constructor(){
         super('BattleScene');
+        this.enemyMonster = {
+
+        };
+
+        this.playerMonster = {
+
+        };
     }
 
     //shouldn't need this
