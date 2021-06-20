@@ -67,6 +67,10 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('Bar-Overlay', './assets/visual/gui/barOverlay.png');
         this.load.image('Bar-Essence', './assets/visual/gui/barEssence.png');
         this.load.image('house', './assets/visual/bg/house.png');
+        this.load.image('foodIcon', './assets/visual/gui/TamagachiIcons/foodIcon.png');
+        this.load.image('cleanIcon', './assets/visual/gui/TamagachiIcons/cleanIcon.png');
+        this.load.image('happyIcon', './assets/visual/gui/TamagachiIcons/happyIcon.png');
+        this.load.image('battleIcon', './assets/visual/gui/TamagachiIcons/battleIcon.png');
 
         //load sprites
         /*EXAMPLE:
@@ -75,6 +79,10 @@ class PreloadScene extends Phaser.Scene {
             frameHeight: 130
         });
         */
+       this.load.spritesheet('waterStarter', './assets/visual/monsters/waterStarter.png', {
+           frameWidth: 16,
+           frameHeight: 16
+       });
 
         //create loading progress
         this.load.on('progress', function (percentage) {
