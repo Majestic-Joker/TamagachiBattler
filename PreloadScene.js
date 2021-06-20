@@ -71,6 +71,22 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('cleanIcon', './assets/visual/gui/TamagachiIcons/cleanIcon.png');
         this.load.image('happyIcon', './assets/visual/gui/TamagachiIcons/happyIcon.png');
         this.load.image('battleIcon', './assets/visual/gui/TamagachiIcons/battleIcon.png');
+        
+        this.load.image('fistIcon', './assets/visual/icons/fist.png');
+        this.load.image('fireIcon', './assets/visual/icons/fire.png');
+        this.load.image('waterIcon', './assets/visual/icons/water.png');
+        this.load.image('windIcon', './assets/visual/icons/wind.png');
+        this.load.image('earthIcon', './assets/visual/icons/earth.png');
+        
+        //loading placeholders
+        this.load.image('fire', './assets/visual/monsters/placeholder/fire.png');
+        this.load.image('fireBack', './assets/visual/monsters/placeholder/fireBack.png');
+        this.load.image('water', './assets/visual/monsters/placeholder/water.png');
+        this.load.image('waterBack', './assets/visual/monsters/placeholder/waterBack.png');
+        this.load.image('wind', './assets/visual/monsters/placeholder/wind.png');
+        this.load.image('windBack', './assets/visual/monsters/placeholder/windBack.png');
+        this.load.image('earth', './assets/visual/monsters/placeholder/earth.png');
+        this.load.image('earthBack', './assets/visual/monsters/placeholder/earthBack.png');
 
         //load sprites
         /*EXAMPLE:
