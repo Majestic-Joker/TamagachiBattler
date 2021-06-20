@@ -1,5 +1,5 @@
 const STATUSES = [
-    /*
+    /*EXAMPLE
         {
         //config stuff
         name: "",
