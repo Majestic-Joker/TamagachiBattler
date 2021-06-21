@@ -27,7 +27,7 @@ class TitleScene extends Phaser.Scene {
             volume: .05
         });
 
-        //make a button for Battle scene
+        /*//make a button for Battle scene
         let battleBtn = this.add.rectangle(225,150, 200, 100, 0xFF0000);
         battleBtn.setOrigin(.5);
         battleBtn.setInteractive();
@@ -35,12 +35,23 @@ class TitleScene extends Phaser.Scene {
             selectSFX.play();
             bgm.stop();
             this.scene.start("BattleScene")
+        });*/
+
+        let titleBG = this.add.rectangle(225,200, 400, 200, 0xFFFFFF, .25);
+        titleBG.setOrigin(0.5);
+
+        let titleText = this.add.text(225,200, `Master\nof\nthe\nElements!`, {
+            fontFamily: 'Pixel',
+            fontSize: '30px',
+            color: 'black',
+            align: 'center'
         });
+        titleText.setOrigin(0.5);
 
         //make a button for tamagachi scene
-        let tamaBtn = this.add.rectangle(225,450, 200, 100, 0x00FF00);
+        let tamaBtn = this.add.rectangle(225,650, 200, 100, 0x00FF00);
         tamaBtn.setOrigin(.5);
-        tamaBtn.text = this.add.text(225, 450, "Tap to Play!", {
+        tamaBtn.text = this.add.text(225, 650, "Tap to Play!", {
             fontFamily: 'Pixel',
             fontSize: '15px',
             color: 'black',
