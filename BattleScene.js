@@ -6,12 +6,26 @@ class BattleScene extends Phaser.Scene {
         this.enemyMove2 = null;
         this.enemyMove3 = null;
         this.enemyMove4 = null;
+        this.enemyHealthBar = null;
+        this.enemyEnergyBar = null;
 
         this.playerMonster = null;
         this.playerMove1 = null;
         this.playerMove2 = null;
         this.playerMove3 = null;
         this.playerMove4 = null;
+        this.playerHealthBar = null;
+        this.playerEnergyBar = null;
+
+        this.barOverlayPlayer1 = null;
+        this.barOverlayPlayer2 = null;
+        this.barOverlayEnemy1 = null;
+        this.barOverlayEnemy2 = null;
+
+        this.enemyLevelText = null;
+        this.playerLevelText = null;
+        this.playerHealthText = null;
+        this.playerEnergyText = null;
 
     }
 
@@ -27,6 +41,7 @@ class BattleScene extends Phaser.Scene {
         });
         //play audio
         battleBGM.play();
+
         //get a random number
         let monsterIndex = Math.floor(Math.random() * MONSTERS.length);
 
@@ -59,11 +74,12 @@ class BattleScene extends Phaser.Scene {
         if(this.playerMonster.move4 != "")
             this.playerMove4 = MOVES[this.playerMonster.move4];
         
-        //create display
+        //set graphics
+        this.enemyHealthBar = this.add.image(20, "")
 
 
         //make a button for title scene
-        let titleBtn = this.add.rectangle(20,20, 20, 20, 0x0000FF);
+        let titleBtn = this.add.rectangle(430,20, 20, 20, 0x0000FF);
         titleBtn.setOrigin(.5);
         titleBtn.setInteractive();
         titleBtn.on('pointerdown', () => {
