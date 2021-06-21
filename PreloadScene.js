@@ -62,6 +62,7 @@ class PreloadScene extends Phaser.Scene {
         //load sfx
         //EXAMPLE: this.load.audio("laser", "./assets/audio/sfx/laser.mp3");
         this.load.audio("Select", "./assets/audio/sfx/Backspace.mp3");
+        this.load.audio("Error", './assets/audio/sfx/Error.wav');
 
         //load graphics
         //EXAMPLE: this.load.image('bg', './assets/visual/bg/pBG1.png');
@@ -70,7 +71,9 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('Bar-HP', './assets/visual/gui/barHealth.png');
         this.load.image('Bar-Overlay', './assets/visual/gui/barOverlay.png');
         this.load.image('Bar-Energy', './assets/visual/gui/barEnergy.png');
+        this.load.image('Bar-Need', './assets/visual/gui/barNeed.png');
         this.load.image('panelThin', './assets/visual/gui/paperPanelThin.png');
+        this.load.image('panelSquare', './assets/visual/gui/paperPanelSquare.png');
         this.load.image('house', './assets/visual/bg/house.png');
         this.load.image('foodIcon', './assets/visual/gui/TamagachiIcons/foodIcon.png');
         this.load.image('cleanIcon', './assets/visual/gui/TamagachiIcons/cleanIcon.png');
