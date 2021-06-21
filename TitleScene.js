@@ -10,6 +10,13 @@ class TitleScene extends Phaser.Scene {
     }
 
     create(){
+        //set bgm
+        let bgm = this.sound.add("Title", {
+            volume: .01,
+            repeat: true
+        });
+        bgm.play();
+
         //set select sfx
         let selectSFX = this.sound.add("Select", {
             volume: .05
@@ -21,6 +28,7 @@ class TitleScene extends Phaser.Scene {
         battleBtn.setInteractive();
         battleBtn.on('pointerdown', () => {
             selectSFX.play();
+            bgm.stop();
             this.scene.start("BattleScene")
         });
 
@@ -30,6 +38,7 @@ class TitleScene extends Phaser.Scene {
         tamaBtn.setInteractive();
         tamaBtn.on('pointerdown', () => {
             selectSFX.play();
+            bgm.stop();
             this.scene.start("TamagachiScene")
         });
     }
