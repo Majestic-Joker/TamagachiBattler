@@ -14,6 +14,14 @@ class TamagachiScene extends Phaser.Scene {
         this.house = null
         this.lastDegrade = 0;
         this.save = null
+
+        this.hungerText = null;
+        this.happinessText = null;
+        this.cleanText = null;
+
+        this.hungerValue = null;
+        this.happinessValue = null;
+        this.cleanValue = null;
     }
 
     update () {
@@ -30,8 +38,16 @@ class TamagachiScene extends Phaser.Scene {
     create () {
         //set audio
         let homeBGM = this.sound.add("Home", {
+            volume: .01,
+            repeat: true
+        });
+        let selectSFX = this.sound.add('Select', {
             volume: .05
         });
+        let errorSFX = this.sound.add('Error', {
+            volume: .05
+        });
+
         //play audio
         homeBGM.play();
         // Create house
@@ -41,33 +57,36 @@ class TamagachiScene extends Phaser.Scene {
         this.foodIcon.setScale(4.5)
         this.foodIcon.setInteractive();
         this.foodIcon.on('pointerdown', ()=> {
-            if (this.hunger < 95) {
-                this.hunger += 5;
+            if (this.hunger < 100) {
+                selectSFX.play();
+                this.hunger += Math.floor(Math.random()*5)+1;
                 }
-            else if (this.hunger > 95) {
-                this.hunger = 100
-                }
+            else{
+                errorSFX.play();
+            }
             })
         this.happyIcon = this.add.image(175, 60, 'happyIcon')
         this.happyIcon.setScale(4.5)
         this.happyIcon.setInteractive();
         this.happyIcon.on('pointerdown', ()=> {
-            if (this.happiness < 95) {
-                this.happiness += 5
+            if (this.happiness < 100) {
+                selectSFX.play();
+                this.happiness += Math.floor(Math.random()*5)+1;
             }
-            else if (this.happiness > 95) {
-                this.happiness = 100
+            else{
+                errorSFX.play();
             }
         })
         this.cleanIcon = this.add.image(275, 60, 'cleanIcon')
         this.cleanIcon.setScale(4.5)
         this.cleanIcon.setInteractive();
         this.cleanIcon.on('pointerdown', ()=> {
-            if (this.clean < 95) {
-                this.clean += 5
+            if (this.clean < 100) {
+                selectSFX.play();
+                this.clean += Math.floor(Math.random()*5)+1;
             }
-            else if (this.clean > 95) {
-                this.clean = 100
+            else{
+                errorSFX.play();
             }
         })
         this.battleIcon = this.add.image(375, 60, 'battleIcon')
@@ -79,12 +98,40 @@ class TamagachiScene extends Phaser.Scene {
         })
 
         // Create bars for hunger, cleanliness, happiness
-        this.hungerBar =  this.add.rectangle(37, 105, 100, 10, 0x5BA150);
+        this.hungerText = this.add.text(30, 110, 'Hunger:', {
+            fontFamily: 'Pixel',
+            fontSize: '10px',
+            color: 'black'
+        });
+        
+        this.hungerBar =  this.add.rectangle(100, 110, 120, 10, 0x5BA150);
         this.hungerBar.setOrigin(0)
-        this.happinessBar = this.add.rectangle(37, 120, 100, 10, 0x5BA150);
+        this.hungerValue = this.add.text(110, 110, `${this.hunger}`, {
+            fontFamily: 'Pixel',
+            fontSize: '10px'
+        });
+        this.happinessText = this.add.text(30, 130, 'Happy:', {
+            fontFamily: 'Pixel',
+            fontSize: '10px',
+            color: 'black'
+        });
+        this.happinessBar = this.add.rectangle(100, 130, 120, 10, 0x5BA150);
         this.happinessBar.setOrigin(0)
-        this.cleanBar = this.add.rectangle(37, 135, 100, 10, 0x5BA150);
-        this.cleanBar.setOrigin(0)
+        this.happinessValue = this.add.text(110, 130, `${this.happiness}`, {
+            fontFamily: 'Pixel',
+            fontSize: '10px'
+        });
+        this.cleanText = this.add.text(30, 150, "Clean:", {
+            fontFamily: 'Pixel',
+            fontSize: '10px',
+            color: "black"
+        });
+        this.cleanBar = this.add.rectangle(100, 150, 120, 10, 0x5BA150);
+        this.cleanBar.setOrigin(0);
+        this.cleanValue = this.add.text(110, 150, `${this.clean}`, {
+            fontFamily: 'Pixel',
+            fontSize: '10px'
+        });
 
         this.monster = this.add.sprite(225, 400, 'waterStarter')
         this.monster.setScale(15)
@@ -93,13 +140,13 @@ class TamagachiScene extends Phaser.Scene {
     degrade () {
         // Check to see make sure bars cant go below 0
         if (this.hunger > 0) {
-        this.hunger--
+        this.hunger -= Math.floor(Math.random()*9)+1;
         }
         if (this.happiness > 0) {
-            this.happiness--
-            }
+        this.happiness -= Math.floor(Math.random()*9)+1;
+        }
         if (this.clean > 0) {
-        this.clean--
+        this.clean -= Math.floor(Math.random()*9)+1;
         }
         // this.energy++
         this.lastDegrade = this.getNow()
@@ -113,9 +160,30 @@ class TamagachiScene extends Phaser.Scene {
     }
 
     updateBars () {
+        if(this.hunger > 100)
+            this.hunger = 100;
+
+        if(this.happiness > 100)
+            this.happiness = 100;
+
+        if(this.clean > 100)
+            this.clean = 100;
+
+        if(this.hunger < 0)
+            this.hunger = 0;
+
+        if(this.happiness < 0)
+            this.happiness = 0;
+
+        if(this.clean < 0)
+            this.clean = 0;
+
         this.hungerBar.setScale(this.hunger / 100, 1)
-        this.happinessBar.setScale(this.happiness / 100, 1) 
+        this.hungerValue.setText(`${this.hunger}`);
+        this.happinessBar.setScale(this.happiness / 100, 1);
+        this.happinessValue.setText(`${this.happiness}`);
         this.cleanBar.setScale(this.clean / 100, 1)
+        this.cleanValue.setText(`${this.clean}`);
     }    
 
     load() {
