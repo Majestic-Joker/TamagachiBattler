@@ -28,10 +28,10 @@ const MONSTERS = [
         growthSpeed: 1,
 
         //move stuff
-        move1: "",
-        move2: "",
-        move3: "",
-        move4: ""
+        move1: -1,
+        move2: -1,
+        move3: -1,
+        move4: -1
     }
     */
     {
@@ -64,8 +64,8 @@ const MONSTERS = [
         //move stuff
         move1: 1,
         move2: 0,
-        move3: "",
-        move4: ""
+        move3: -1,
+        move4: -1
     },
     {
         //config stuff
@@ -97,8 +97,8 @@ const MONSTERS = [
         //move stuff
         move1: 2,
         move2: 0,
-        move3: "",
-        move4: ""
+        move3: -1,
+        move4: -1
     },
     {
         //config stuff
@@ -130,8 +130,8 @@ const MONSTERS = [
         //move stuff
         move1: 3,
         move2: 0,
-        move3: "",
-        move4: ""
+        move3: -1,
+        move4: -1
     },
     {
         //config stuff
@@ -163,7 +163,7 @@ const MONSTERS = [
         //move stuff
         move1: 4,
         move2: 0,
-        move3: "",
-        move4: ""
+        move3: -1,
+        move4: -1
     }
 ]

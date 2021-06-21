@@ -22,7 +22,7 @@ const MOVES = [
         icon: "fistIcon",
         
         //Visible stuff
-        element: "",
+        element: "none",
         damage: 10,
         cost: 0,
         description: "slaps the opponent!",
