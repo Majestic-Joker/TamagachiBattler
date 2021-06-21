@@ -51,6 +51,7 @@ class PreloadScene extends Phaser.Scene {
 
         //load font
         //EXAMPLE: this.loadFont("Excluded", "./assets/visual/fonts/Excluded.ttf");
+        this.loadFont("Pixel", "./assets/visual/fonts/PressStart2P.ttf");
 
         //load music
         //EXAMPLE: this.load.audio("Title", './assets/audio/bgm/Title.wav');
@@ -63,9 +64,11 @@ class PreloadScene extends Phaser.Scene {
 
         //load graphics
         //EXAMPLE: this.load.image('bg', './assets/visual/bg/pBG1.png');
+        this.load.image('battleBG-cave', './assets/visual/bg/caveBG.png');
         this.load.image('Bar-HP', './assets/visual/gui/barHealth.png');
         this.load.image('Bar-Overlay', './assets/visual/gui/barOverlay.png');
-        this.load.image('Bar-Essence', './assets/visual/gui/barEssence.png');
+        this.load.image('Bar-Energy', './assets/visual/gui/barEnergy.png');
+        this.load.image('panelThin', './assets/visual/gui/paperPanelThin.png');
         this.load.image('house', './assets/visual/bg/house.png');
         this.load.image('foodIcon', './assets/visual/gui/TamagachiIcons/foodIcon.png');
         this.load.image('cleanIcon', './assets/visual/gui/TamagachiIcons/cleanIcon.png');

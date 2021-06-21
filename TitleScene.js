@@ -12,7 +12,7 @@ class TitleScene extends Phaser.Scene {
     create(){
         //set select sfx
         let selectSFX = this.sound.add("Select", {
-            volume: .5
+            volume: .05
         });
 
         //make a button for Battle scene
