@@ -10,6 +10,11 @@ class TitleScene extends Phaser.Scene {
     }
 
     create(){
+        //set BG
+        let bg = this.add.image(225,430, 'house');
+        bg.setOrigin(0.5);
+        bg.setScale(11);
+
         //set bgm
         let bgm = this.sound.add("Title", {
             volume: .01,
@@ -35,6 +40,13 @@ class TitleScene extends Phaser.Scene {
         //make a button for tamagachi scene
         let tamaBtn = this.add.rectangle(225,450, 200, 100, 0x00FF00);
         tamaBtn.setOrigin(.5);
+        tamaBtn.text = this.add.text(225, 450, "Tap to Play!", {
+            fontFamily: 'Pixel',
+            fontSize: '15px',
+            color: 'black',
+            align: 'center'
+        });
+        tamaBtn.text.setOrigin(0.5);
         tamaBtn.setInteractive();
         tamaBtn.on('pointerdown', () => {
             selectSFX.play();
