@@ -43,7 +43,7 @@ const MONSTERS = [
         //visible stuff
         level: 1,
         hp: 10,
-        energy: 10,
+        energy: 9,
         attack: 4,
         defense: 5,
         elementalAttack: 8,
@@ -75,8 +75,8 @@ const MONSTERS = [
 
         //visible stuff
         level: 1,
-        hp: 10,
-        energy: 10,
+        hp: 8,
+        energy: 7,
         attack: 9,
         defense: 8,
         elementalAttack: 5,
@@ -108,8 +108,8 @@ const MONSTERS = [
 
         //visible stuff
         level: 1,
-        hp: 10,
-        energy: 10,
+        hp: 7,
+        energy: 8,
         attack: 3,
         defense: 5,
         elementalAttack: 7,
@@ -142,7 +142,7 @@ const MONSTERS = [
         //visible stuff
         level: 1,
         hp: 10,
-        energy: 10,
+        energy: 6,
         attack: 6,
         defense: 4,
         elementalAttack: 8,

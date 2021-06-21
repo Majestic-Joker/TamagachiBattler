@@ -24,6 +24,7 @@ const MOVES = [
         //Visible stuff
         element: "",
         damage: 10,
+        cost: 0,
         description: "slaps the opponent!",
 
         //hidden stuff
@@ -38,6 +39,7 @@ const MOVES = [
         //Visible stuff
         element: "fire",
         damage: 10,
+        cost: 2,
         description: "torches the opponent!",
 
 
@@ -53,6 +55,7 @@ const MOVES = [
         //Visible stuff
         element: "earth",
         damage: 10,
+        cost: 2,
         description: "sends shockwaves through the earth!",
 
 
@@ -68,6 +71,7 @@ const MOVES = [
         //Visible stuff
         element: "wind",
         damage: 10,
+        cost: 2,
         description: "blows a gust at the opponent!",
 
 
@@ -83,6 +87,7 @@ const MOVES = [
         //Visible stuff
         element: "water",
         damage: 10,
+        cost: 2,
         description: "splashes the opponent!",
 
 
