@@ -96,6 +96,15 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('earth', './assets/visual/monsters/placeholder/earth.png');
         this.load.image('earthBack', './assets/visual/monsters/placeholder/earthBack.png');
 
+        //load parallax
+        this.load.image('cloud', './assets/visual/bg/cloud_lonely.png')
+        this.load.image('cloudbg', './assets/visual/bg/clouds_bg.png')
+        this.load.image('cloudmg1', './assets/visual/bg/clouds_mg_1.png')
+        this.load.image('cloudmg2', './assets/visual/bg/clouds_mg_2.png')
+        this.load.image('cloudmg3', './assets/visual/bg/clouds_mg_3.png')
+        this.load.image('mountains', './assets/visual/bg/glacial_mountains.png')
+        this.load.image('sky', './assets/visual/bg/sky.png')
+
         //load sprites
         /*EXAMPLE:
         this.load.spritesheet('player', './assets/visual/ships/player.png', {

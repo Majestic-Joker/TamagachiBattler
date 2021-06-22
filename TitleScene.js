@@ -1,6 +1,7 @@
 class TitleScene extends Phaser.Scene {
     constructor(){
         super('TitleScene');
+        this.parallax = []
     }
 
 
@@ -11,9 +12,9 @@ class TitleScene extends Phaser.Scene {
 
     create(){
         //set BG
-        let bg = this.add.image(225,430, 'house');
-        bg.setOrigin(0.5);
-        bg.setScale(11);
+        // let bg = this.add.image(225,430, 'house');
+        // bg.setOrigin(0.5);
+        // bg.setScale(11);
 
         //set bgm
         let bgm = this.sound.add("Title", {
@@ -26,6 +27,30 @@ class TitleScene extends Phaser.Scene {
         let selectSFX = this.sound.add("Select", {
             volume: .05
         });
+
+        let sky = this.add.tileSprite(0,0,450,800,'sky');
+        sky.setScale(4)
+        sky.setOrigin(0);
+        let mountains = this.add.tileSprite(0,0,450,800,'mountains');
+        mountains.setScale(4)
+        mountains.setOrigin(0);
+        let cloudmg3 = this.add.tileSprite(0,0,450,800,'cloudmg3');
+        cloudmg3.setScale(4)
+        cloudmg3.setOrigin(0);
+        let cloudmg2 = this.add.tileSprite(0,0,450,800,'cloudmg2');
+        cloudmg2.setScale(4)
+        cloudmg2.setOrigin(0);
+        let cloudmg1 = this.add.tileSprite(0,0,450,800,'cloudmg1');
+        cloudmg1.setScale(4)
+        cloudmg1.setOrigin(0);
+        let cloudbg = this.add.tileSprite(0,0,450,800,'cloudbg');
+        cloudbg.setScale(4)
+        cloudbg.setOrigin(0);
+        let cloud = this.add.tileSprite(0,0,450,800,'cloud');
+        cloud.setScale(4)
+        cloud.setOrigin(0);
+
+        this.parallax = [sky, mountains, cloudmg3, cloudmg2, cloudmg1, cloudbg, cloud];
 
         /*//make a button for Battle scene
         let battleBtn = this.add.rectangle(225,150, 200, 100, 0xFF0000);
@@ -64,6 +89,12 @@ class TitleScene extends Phaser.Scene {
             bgm.stop();
             this.scene.start("TamagachiScene")
         });
+    }
+
+    update() {
+        for(let i = 0; i < 7; i++){
+            this.parallax[i].tilePositionX -= (i/3);
+        }
     }
 
 }
