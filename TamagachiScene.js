@@ -15,6 +15,8 @@ class TamagachiScene extends Phaser.Scene {
         this.lastDegrade = 0;
         this.save = null
         this.dragFoodIcon = null;
+        this.dragCleanIcon = null;
+        this.dragHappyIcon = null;
 
         this.hungerText = null;
         this.happinessText = null;
@@ -26,7 +28,7 @@ class TamagachiScene extends Phaser.Scene {
     }
 
     update () {
-        if(this.getNow() > this.lastDegrade + 5000){
+        if(this.getNow() > (this.lastDegrade + 5000) - (this.save - this.getNow)){
             this.degrade();
             this.save = this.getNow()
         }
@@ -36,6 +38,12 @@ class TamagachiScene extends Phaser.Scene {
         this.updateBars();
         if (this.dragFoodIcon){
             this.dragFoodIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+        }
+        if (this.dragHappyIcon){
+            this.dragHappyIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+        }
+        if (this.dragCleanIcon){
+            this.dragCleanIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
         }
     }
 
@@ -65,6 +73,9 @@ class TamagachiScene extends Phaser.Scene {
             if (this.hunger < 100) {
                 this.dragFoodIcon = this.physics.add.sprite(75, 60, 'food')
             }
+            else{
+                errorSFX.play(); 
+            }
         })
         this.input.on('pointerup', (pointer, objects)=> {
             console.log(objects)
@@ -74,34 +85,56 @@ class TamagachiScene extends Phaser.Scene {
                 icon.destroy();
                 if(objects.includes(this.monster)) {
                     console.log("fed monster")
+                    this.hunger += 10
                 }
             }
         })
-
-
 
         this.happyIcon = this.add.image(175, 60, 'happyIcon')
         this.happyIcon.setScale(4.5)
         this.happyIcon.setInteractive();
         this.happyIcon.on('pointerdown', ()=> {
             if (this.happiness < 100) {
-                selectSFX.play();
-                this.happiness += Math.floor(Math.random()*5)+1;
+                this.dragHappyIcon = this.physics.add.sprite(175, 60, 'food')
             }
             else{
-                errorSFX.play();
+                errorSFX.play(); 
             }
         })
+        this.input.on('pointerup', (pointer, objects)=> {
+            console.log(objects)
+            if (this.dragHappyIcon) {
+                let icon = this.dragHappyIcon;
+                this.dragHappyIcon = null;
+                icon.destroy();
+                if(objects.includes(this.monster)) {
+                    console.log("happy monster")
+                    this.happiness += 10
+                }
+            }
+        })
+
         this.cleanIcon = this.add.image(275, 60, 'cleanIcon')
         this.cleanIcon.setScale(4.5)
         this.cleanIcon.setInteractive();
         this.cleanIcon.on('pointerdown', ()=> {
             if (this.clean < 100) {
-                selectSFX.play();
-                this.clean += Math.floor(Math.random()*5)+1;
+                this.dragCleanIcon = this.physics.add.sprite(275, 60, 'soap')
             }
             else{
-                errorSFX.play();
+                errorSFX.play(); 
+            }
+        })
+        this.input.on('pointerup', (pointer, objects)=> {
+            console.log(objects)
+            if (this.dragCleanIcon) {
+                let icon = this.dragCleanIcon;
+                this.dragCleanIcon = null;
+                icon.destroy();
+                if(objects.includes(this.monster)) {
+                    console.log("happy monster")
+                    this.clean += 10
+                }
             }
         })
         this.battleIcon = this.add.image(375, 60, 'battleIcon')
