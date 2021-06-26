@@ -14,6 +14,7 @@ class TamagachiScene extends Phaser.Scene {
         this.house = null
         this.lastDegrade = 0;
         this.save = null
+        this.dragFoodIcon = null;
 
         this.hungerText = null;
         this.happinessText = null;
@@ -33,6 +34,9 @@ class TamagachiScene extends Phaser.Scene {
         this.careQuality = ((this.hunger + this.happiness + this.clean) / 3)
 
         this.updateBars();
+        if (this.dragFoodIcon){
+            this.dragFoodIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+        }
     }
 
     create () {
@@ -58,13 +62,23 @@ class TamagachiScene extends Phaser.Scene {
         this.foodIcon.setInteractive();
         this.foodIcon.on('pointerdown', ()=> {
             if (this.hunger < 100) {
-                selectSFX.play();
-                this.hunger += Math.floor(Math.random()*5)+1;
-                }
-            else{
-                errorSFX.play();
+                this.dragFoodIcon = this.physics.add.sprite(75, 60, 'food')
             }
-            })
+        })
+        this.input.on('pointerup', (pointer, objects)=> {
+            console.log(objects)
+            if (this.dragFoodIcon) {
+                let icon = this.dragFoodIcon;
+                this.dragFoodIcon = null;
+                icon.destroy();
+                if(objects.includes(this.monster)) {
+                    console.log("fed monster")
+                }
+            }
+        })
+
+
+
         this.happyIcon = this.add.image(175, 60, 'happyIcon')
         this.happyIcon.setScale(4.5)
         this.happyIcon.setInteractive();
@@ -133,8 +147,9 @@ class TamagachiScene extends Phaser.Scene {
             fontSize: '10px'
         });
 
-        this.monster = this.add.sprite(225, 400, 'waterStarter')
+        this.monster = this.physics.add.sprite(225, 400, 'waterStarter')
         this.monster.setScale(15)
+        this.monster.setInteractive();
     }
 
     degrade () {
@@ -189,5 +204,7 @@ class TamagachiScene extends Phaser.Scene {
     load() {
 
     }
+
+
 
 }
