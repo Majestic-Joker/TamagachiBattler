@@ -60,6 +60,7 @@ class TamagachiScene extends Phaser.Scene {
         this.foodIcon = this.add.image(75, 60, 'foodIcon')
         this.foodIcon.setScale(4.5)
         this.foodIcon.setInteractive();
+        //drag an drop
         this.foodIcon.on('pointerdown', ()=> {
             if (this.hunger < 100) {
                 this.dragFoodIcon = this.physics.add.sprite(75, 60, 'food')
