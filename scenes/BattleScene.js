@@ -63,6 +63,9 @@ class BattleScene extends Phaser.Scene {
 
     //pulls monster data from the previous scene
     init(data){
+        if(this.playerMonster)
+            this.playerMonster = null;
+
         this.playerMonster = data;
     }
 
@@ -70,6 +73,9 @@ class BattleScene extends Phaser.Scene {
     preload(){
         if(!this.moveResolve)
             this.moveResolved = true;
+
+        if(this.enemyMonster)
+            this.enemyMonter = null;
     }
 
     create(){
@@ -100,25 +106,6 @@ class BattleScene extends Phaser.Scene {
             
     }
 
-    loadLocalMonsterData(){
-        const monsterData = loadObjectFromLocal();
-        // Check if data was loaded correctly
-        if (monsterData) {
-            this.playerMonster = monsterData;
-        } else {
-            console.log('Failed to load monster data from cache.');
-        }
-    }
-
-    //reset data back to null
-    resetLocalMonsterData() {
-        const data = {
-            monster: null
-        };
-        // Save the reset values
-        saveObjectToLocal(data);
-    }
-
     async loadFirebaseMonsterData() {
         //document reference
         const docRef = await this.gameData.doc(this.user.uid);
@@ -134,15 +121,10 @@ class BattleScene extends Phaser.Scene {
     }
 
     async saveMonsterData() {
-        console.log(this.monsterData);
+        console.log(this.playerMonster);
 
-        this.monsterData.hp = this.maxHp;
-        this.monsterData.chp = this.hp;
-        this.monsterData.level = this.level;
-        this.monsterData.happiness = this.happiness;
-        this.monsterData.cleanliness = this.clean;
-        this.monsterData.hunger = this.hunger;
-        this.monsterData.careQuality = this.careQualityValue.text;
+        this.playerMonster.hp = this.playerMaxHP;
+        this.playerMonster.chp = this.playerCurrentHP;
 
         if(this.user != null){
             //document reference
@@ -152,19 +134,9 @@ class BattleScene extends Phaser.Scene {
             const docSnap = await docRef.get();
 
             docRef.set({
-                monster: this.monsterData
+                monster: this.playerMonster
             });
         }
-        else{
-            const data = {
-                monster: this.monsterData,
-                lastPlayed: this.getNow()
-            };
-            saveObjectToLocal(data);
-        }
-
-        this.monsterData = null;
-
         this.signals.emit('data-saved');
     }
 
@@ -525,6 +497,7 @@ class BattleScene extends Phaser.Scene {
         this.playerMonster.level++;
 
         //update new stats
+        this.playerMonster.xp = 0;
         this.playerMonster.hp += this.playerMonster.growthHp;
         this.playerMonster.chp = this.playerMonster.hp;
         this.playerMonster.energy += this.playerMonster.growthEnergy;
