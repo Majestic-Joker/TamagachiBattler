@@ -4,20 +4,30 @@ class TamagachiScene extends Phaser.Scene {
         this.hunger = 100; 
         this.happiness = 100;
         this.clean = 100;
+        this.average = null;
         this.careQuality = null;
-        this.energy = 100;
-        this.name = 'Gary';
-        this.floor = null
-        this.wall = null
-        this.couch = null
-        this.table = null
-        this.house = null
+        this.house = null;
         this.lastDegrade = 0;
-        this.save = null
+
         this.dragFoodIcon = null;
         this.dragCleanIcon = null;
         this.dragHappyIcon = null;
 
+        this.statusBox = null;
+        this.maxHp = 10;
+        this.hp = 0;
+        this.level = 1;
+        this.name = 'Gary';
+
+        this.hpValue = null;
+        this.levelValue = null;
+        this.nameValue = null;
+        this.careQualityValue = null;
+
+        this.hpText = null;
+        this.levelText = null;
+        this.nameText = null;
+        this.careQualityText = null;
         this.hungerText = null;
         this.happinessText = null;
         this.cleanText = null;
@@ -31,9 +41,23 @@ class TamagachiScene extends Phaser.Scene {
         if(this.getNow() > (this.lastDegrade + 5000)){
             this.degrade();
             this.save = this.getNow()
+            this.hpValue.setText(`${this.hp}`)
         }
 
-        this.careQuality = ((this.hunger + this.happiness + this.clean) / 3)
+        this.average = ((this.hunger + this.happiness + this.clean) / 3)
+        if (this.average > 75) {
+            this.careQuality = "Happy";
+        }
+        else if (this.average < 75 && this.average > 50) {
+            this.careQuality = "Content";
+        }
+        else if (this.average < 50 && this.average > 25) {
+            this.careQuality = "Sad";
+        }
+        else {
+            this.careQuality = "Dying";
+        }
+        this.careQualityValue.setText(`${this.careQuality}`);
 
         this.updateBars();
         if (this.dragFoodIcon){
@@ -197,6 +221,48 @@ class TamagachiScene extends Phaser.Scene {
         this.monster = this.physics.add.sprite(225, 400, 'water')
         this.monster.setScale(15)
         this.monster.setInteractive();
+
+        this.statusBox = this.add.rectangle(225, 700, 400, 175, 0xFFFFFF, 0.5)
+        this.hpValue = this.add.text(145, 620, `${this.hp}`,{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.hpText = this.add.text(40, 620, `HP:`, {
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.levelValue = this.add.text(200, 655, `${this.level}`,{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.levelText = this.add.text(35, 655, 'Level:',{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.careQualityValue = this.add.text(250, 700, `${this.careQuality}`,{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.careQualityText = this.add.text(35, 700, 'Quality:',{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.nameValue = this.add.text(175, 750, `${this.name}`,{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
+        this.nameText = this.add.text(35, 750, 'Name:',{
+            fontFamily: 'Pixel',
+            fontSize: '25px',
+            color: 'black'
+        })
     }
 
     degrade () {
@@ -215,6 +281,14 @@ class TamagachiScene extends Phaser.Scene {
         console.log(this.hunger)
         console.log(this.happiness)
         console.log(this.clean)
+        console.log(this.average)
+        if (this.careQuality === "Dying" && this.hp > 1) {
+            this.hp--
+        }
+
+        if (this.careQuality != "Dying" && this.hp < this.maxHp) {
+            this.hp++
+        }
     }
 
     getNow() {
@@ -250,6 +324,10 @@ class TamagachiScene extends Phaser.Scene {
 
     load() {
 
+    }
+
+    careQualityfunc () {
+        
     }
 
 
