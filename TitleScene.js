@@ -78,7 +78,7 @@ class TitleScene extends Phaser.Scene {
         titleText.setOrigin(0.5);
 
         //make a button for tamagachi scene
-        let tamaBtn = this.add.rectangle(225,650, 200, 100, 0x00FF00);
+        let tamaBtn = this.add.rectangle(225,650, 200, 100, 0x4285F4);
         tamaBtn.setOrigin(.5);
         tamaBtn.text = this.add.text(225, 650, "Tap to Play!", {
             fontFamily: 'Pixel',
