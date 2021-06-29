@@ -28,7 +28,7 @@ class TamagachiScene extends Phaser.Scene {
     }
 
     update () {
-        if(this.getNow() > (this.lastDegrade + 5000) - (this.save - this.getNow)){
+        if(this.getNow() > (this.lastDegrade + 5000)){
             this.degrade();
             this.save = this.getNow()
         }
@@ -95,7 +95,7 @@ class TamagachiScene extends Phaser.Scene {
         this.happyIcon.setInteractive();
         this.happyIcon.on('pointerdown', ()=> {
             if (this.happiness < 100) {
-                this.dragHappyIcon = this.physics.add.sprite(175, 60, 'food')
+                this.dragHappyIcon = this.physics.add.sprite(175, 60, 'ball')
             }
             else{
                 errorSFX.play(); 
