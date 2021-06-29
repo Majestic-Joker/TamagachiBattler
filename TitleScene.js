@@ -6,8 +6,8 @@ class TitleScene extends Phaser.Scene {
         this.googleBtn = null;
         this.soBtn = null;
         this.database = firebase.firestore();
+        this.gameData = this.database.collection('gameData');
     }
-
 
     //nothing
     preload(){
@@ -134,7 +134,7 @@ class TitleScene extends Phaser.Scene {
     async login() {
         let user = await this.fire.signInWithGoogle();
         if (user != null) {
-            this.userTable.doc(user.uid).set({
+            this.gameData.doc(user.uid).set({
                 lastLogin: new Date().getTime() / 1000
             });
         }
@@ -145,5 +145,6 @@ class TitleScene extends Phaser.Scene {
         await this.fire.signOut();
         console.log(await this.fire.user());
     }
+
 
 }
