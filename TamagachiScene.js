@@ -59,6 +59,15 @@ class TamagachiScene extends Phaser.Scene {
         let errorSFX = this.sound.add('Error', {
             volume: .05
         });
+        let eatSFX = this.sound.add('Eat', {
+            volume: .2
+        });
+        let happySFX = this.sound.add('Happy', {
+            volume: .1
+        });
+        let cleanSFX = this.sound.add('Blub', {
+            volume: .25
+        });
 
         //play audio
         homeBGM.play();
@@ -87,6 +96,7 @@ class TamagachiScene extends Phaser.Scene {
                 if(objects.includes(this.monster)) {
                     console.log("fed monster")
                     this.hunger += 10
+                    eatSFX.play();
                 }
             }
         })
@@ -111,6 +121,7 @@ class TamagachiScene extends Phaser.Scene {
                 if(objects.includes(this.monster)) {
                     console.log("happy monster")
                     this.happiness += 10
+                    happySFX.play();
                 }
             }
         })
@@ -135,6 +146,7 @@ class TamagachiScene extends Phaser.Scene {
                 if(objects.includes(this.monster)) {
                     console.log("happy monster")
                     this.clean += 10
+                    cleanSFX.play();
                 }
             }
         })
