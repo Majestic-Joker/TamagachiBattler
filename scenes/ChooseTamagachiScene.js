@@ -54,7 +54,7 @@ class ChooseTamagachiScene extends Phaser.Scene {
                 this.saveData(this.monster);
                 this.signals.on('data-saved', () => {
                     this.signals.off('data-saved');
-                    this.scene.start("TamagachiScene");
+                    this.scene.start("TamagachiScene", this.monster);
                 });
             })
             this.waterStarter = this.add.image(350,360, 'water');
@@ -65,7 +65,7 @@ class ChooseTamagachiScene extends Phaser.Scene {
                 this.saveData(this.monster);
                 this.signals.on('data-saved', () => {
                     this.signals.off('data-saved');
-                    this.scene.start("TamagachiScene");
+                    this.scene.start("TamagachiScene", this.monster);
                 });
             })
             this.earthStarter = this.add.image(100,550, 'earth');
@@ -76,7 +76,7 @@ class ChooseTamagachiScene extends Phaser.Scene {
                 this.saveData(this.monster);
                 this.signals.on('data-saved', () => {
                     this.signals.off('data-saved');
-                    this.scene.start("TamagachiScene");
+                    this.scene.start("TamagachiScene", this.monster);
                 });
             })
                 this.windStarter = this.add.image(310,620, 'wind');
@@ -87,7 +87,7 @@ class ChooseTamagachiScene extends Phaser.Scene {
                     this.saveData(this.monster);
                     this.signals.on('data-saved', () => {
                         this.signals.off('data-saved');
-                        this.scene.start("TamagachiScene");
+                        this.scene.start("TamagachiScene", this.monster);
                     });
                 })
             }
@@ -125,9 +125,6 @@ class ChooseTamagachiScene extends Phaser.Scene {
                 };
             saveObjectToLocal(data);
             }
-
-            this.monster = null;
-            
             this.signals.emit('data-saved');
         }
     

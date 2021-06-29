@@ -50,9 +50,9 @@ class TamagachiScene extends Phaser.Scene {
         this.signals = SignalManager.get();
     }
 
-    /*init(data){
-        this.monsterImage = data.image;
-    }*/
+    init(data){
+        this.monsterData = data;
+    }
 
     preload(){
         //load data
@@ -66,8 +66,16 @@ class TamagachiScene extends Phaser.Scene {
                 this.dataLoaded = true;
             });
         }
-        else
-            this.loadLocalMonsterData();
+        else{
+        this.maxHp = this.monsterData.hp;
+        this.hp = this.monsterData.chp;
+        this.level = this.monsterData.level;
+        this.name = this.monsterData.name;
+        this.monsterImage = this.monsterData.image;
+        this.happiness = 100;
+        this.clean = 100;
+        this.hunger = 100;
+        }
     }
 
     create () {
@@ -273,15 +281,16 @@ class TamagachiScene extends Phaser.Scene {
         titleBtn.setInteractive();
         titleBtn.on('pointerdown', () => {
             this.homeBGM.stop();
-            if(this.user)
+            if(this.user){
                 this.saveMonsterData(this.monsterData);
-            else
-                this.resetLocalMonsterData();
-
-            this.signals.on('data-saved', () => {
-                this.signals.off('data-saved');
-                this.scene.start("TitleScene");
-            });
+                this.signals.on('data-saved', () => {
+                    this.signals.off('data-saved');
+                    this.scene.start("TitleScene");
+                });
+            }
+            else{
+                this.scene.start('TitleScene');
+            }
         });
     }
 
@@ -341,16 +350,6 @@ class TamagachiScene extends Phaser.Scene {
         this.happiness = monster.happiness;
         this.clean = monster.cleanliness;
         this.hunger = monster.hunger;
-    }
-
-    loadLocalMonsterData(){
-        const monsterData = loadObjectFromLocal();
-        // Check if data was loaded correctly
-        if (monsterData) {
-            this.monsterData = monsterData;
-        } else {
-            console.log('Failed to load monster data from cache.');
-        }
     }
 
     //reset data back to null

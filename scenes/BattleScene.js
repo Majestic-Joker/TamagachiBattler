@@ -68,6 +68,8 @@ class BattleScene extends Phaser.Scene {
 
     //shouldn't need this for images/audio
     preload(){
+        if(!this.moveResolve)
+            this.moveResolved = true;
     }
 
     create(){
@@ -427,6 +429,7 @@ class BattleScene extends Phaser.Scene {
             duration: 500,
             scaleX: (this.playerCurrentEnergy/this.playerMaxEnergy)*.84,
             onComplete: ()=>{
+                this.updateVisualInfo();
                 //damage enemy
                 this.damageEnemy(move.damage, move.element);
                 //update enemy health bar
@@ -436,6 +439,7 @@ class BattleScene extends Phaser.Scene {
                     duration: 500,
                     scaleX: (this.enemyCurrentHP/this.enemyMaxHP)*.84,
                     onComplete: () => {
+                        this.updateVisualInfo();
                         //check if enemy dead
                         if(this.enemyCurrentHP > 0){
                             //enemy alive
@@ -448,6 +452,7 @@ class BattleScene extends Phaser.Scene {
                                 duration: 500,
                                 scaleX: (this.enemyCurrentEnergy/this.enemyMaxEnergy)*.84,
                                 onComplete: ()=>{
+                                    this.updateVisualInfo();
                                     //damage player
                                     this.damagePlayer(enemySelection.damage, enemySelection.element);
                                     //update player health bar
@@ -457,6 +462,7 @@ class BattleScene extends Phaser.Scene {
                                         duration: 500,
                                         scaleX: (this.playerCurrentHP/this.playerMaxHP)*.84,
                                         onComplete: ()=>{
+                                            this.updateVisualInfo();
                                             //check if player dead
                                             if(this.playerCurrentHP > 0){
                                             //player alive
@@ -539,30 +545,28 @@ class BattleScene extends Phaser.Scene {
     }
 
     updateVisualInfo(){
-        if(this.enemyCurrentHP < 0)
+        if(this.enemyCurrentHP < 0){
             this.enemyCurrentHP = 0;
+            this.enemyHealthBar.setScale((this.enemyCurrentHP/this.enemyMaxHP)*.84,.25);
+        }
 
-        this.enemyHealthBar.setScale((this.enemyCurrentHP/this.enemyMaxHP)*.84,.25);
-        this.enemyEnergyBar.setScale((this.enemyCurrentEnergy/this.enemyMaxEnergy)*.84,.25);
-        this.playerHealthBar.setScale((this.playerCurrentHP/this.playerMaxHP)*.84,.25);
-        this.playerEnergyBar.setScale((this.playerCurrentEnergy/this.playerMaxEnergy)*.84,.25);
+        if(this.enemyCurrentEnergy < 0){
+            this.enemyCurrentEnergy = 0;
+            this.enemyEnergyBar.setScale((this.enemyCurrentEnergy/this.enemyMaxEnergy)*.84,.25);
+        }
+        
+        if(this.playerCurrentHP < 0){
+            this.playerCurrentHP = 0;
+            this.playerHealthBar.setScale((this.playerCurrentHP/this.playerMaxHP)*.84,.25);
+        }
+
+        if(this.playerCurrentEnergy < 0){
+            this.playerCurrentEnergy = 0;
+            this.playerEnergyBar.setScale((this.playerCurrentEnergy/this.playerMaxEnergy)*.84,.25);
+        }
+        
         this.playerHealthText.setText(`${this.playerCurrentHP}/${this.playerMaxHP}`);
         this.playerEnergyText.setText(`${this.playerCurrentEnergy}/${this.playerMaxEnergy}`);
-
-        if(this.playerCurrentHP <= 0){
-            this.battleBGM.stop();
-            this.scene.start("TitleScene");
-        }
-        else if(this.enemyCurrentHP <= 0){
-            this.battleBGM.stop();
-            this.scene.start("TamagachiScene");
-        }
-
-        if(this.playerCurrentEnergy <= 0)
-            this.playerCurrentEnergy = 0;
-
-        if(this.enemyCurrentEnergy <= 0)
-            this.enemyCurrentEnergy = 0;
     }
 
     damageEnemy(value, element){
