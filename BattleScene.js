@@ -116,7 +116,7 @@ class BattleScene extends Phaser.Scene {
 
         this.enemyImage = this.add.image(350,100, this.enemyMonster.image);
         this.enemyImage.setOrigin(0.5);
-        this.enemyImage.setScale(0.6);
+        this.enemyImage.setScale(10);
         this.enemyPanel = this.add.image(0, 0, "panelThin");
         this.enemyPanel.setOrigin(0);
         this.enemyPanel.setScale(.75,0.5);
@@ -152,7 +152,7 @@ class BattleScene extends Phaser.Scene {
 
         this.playerImage = this.add.image(100,400, this.playerMonster.backImage);
         this.playerImage.setOrigin(0.5);
-        this.playerImage.setScale(0.8);
+        this.playerImage.setScale(10);
         this.playerPanel = this.add.image(450,450, "panelThin");
         this.playerPanel.setOrigin(1,0);
         this.playerPanel.setScale(0.75,.5);
@@ -397,4 +397,6 @@ class BattleScene extends Phaser.Scene {
         else if(selectedMove == 4)
             return this.enemyMove4;
     }
+
+    //add check elemental function
 }

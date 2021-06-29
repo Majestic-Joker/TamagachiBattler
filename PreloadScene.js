@@ -93,20 +93,14 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('earthIcon', './assets/visual/icons/earth.png');
         
         //loading placeholders
-        this.load.image('fire', './assets/visual/monsters/placeholder/fire.png');
-        this.load.image('fireBack', './assets/visual/monsters/placeholder/fireBack.png');
-        this.load.image('water', './assets/visual/monsters/placeholder/water.png');
-        this.load.image('waterBack', './assets/visual/monsters/placeholder/waterBack.png');
-        this.load.image('wind', './assets/visual/monsters/placeholder/wind.png');
-        this.load.image('windBack', './assets/visual/monsters/placeholder/windBack.png');
-        this.load.image('earth', './assets/visual/monsters/placeholder/earth.png');
-        this.load.image('earthBack', './assets/visual/monsters/placeholder/earthBack.png');
-
-        //loading monsters
-        this.load.image('fireStarter', './assets/visual/monsters/fireStarter.png');
-        this.load.image('waterStarter', './assets/visual/monsters/waterStarter.png');
-        this.load.image('earthStarter', './assets/visual/monsters/earthStarter.png');
-        this.load.image('windStarter', './assets/visual/monsters/windStarter.png');
+        this.load.image('fire', './assets/visual/monsters/fire.png');
+        this.load.image('fireBack', './assets/visual/monsters/fireBack.png');
+        this.load.image('water', './assets/visual/monsters/water.png');
+        this.load.image('waterBack', './assets/visual/monsters/waterBack.png');
+        this.load.image('wind', './assets/visual/monsters/wind.png');
+        this.load.image('windBack', './assets/visual/monsters/windBack.png');
+        this.load.image('earth', './assets/visual/monsters/earth.png');
+        this.load.image('earthBack', './assets/visual/monsters/earthBack.png');
 
         //load parallax
         this.load.image('cloud', './assets/visual/bg/cloud_lonely.png')
@@ -124,10 +118,6 @@ class PreloadScene extends Phaser.Scene {
             frameHeight: 130
         });
         */
-       this.load.spritesheet('waterStarter', './assets/visual/monsters/waterStarter.png', {
-           frameWidth: 16,
-           frameHeight: 16
-       });
 
         //create loading progress
         this.load.on('progress', function (percentage) {

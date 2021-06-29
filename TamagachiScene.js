@@ -194,7 +194,7 @@ class TamagachiScene extends Phaser.Scene {
             fontSize: '10px'
         });
 
-        this.monster = this.physics.add.sprite(225, 400, 'waterStarter')
+        this.monster = this.physics.add.sprite(225, 400, 'water')
         this.monster.setScale(15)
         this.monster.setInteractive();
     }

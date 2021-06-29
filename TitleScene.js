@@ -43,7 +43,7 @@ class TitleScene extends Phaser.Scene {
         let cloudmg1 = this.add.tileSprite(0,0,450,800,'cloudmg1');
         cloudmg1.setScale(4)
         cloudmg1.setOrigin(0);
-        let cloudbg = this.add.tileSprite(0,150,450,800,'cloudbg');
+        let cloudbg = this.add.tileSprite(0,200,450,800,'cloudbg');
         cloudbg.setScale(4)
         cloudbg.setOrigin(0);
         let cloud = this.add.tileSprite(0,0,450,800,'cloud');
