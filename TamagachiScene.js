@@ -28,7 +28,7 @@ class TamagachiScene extends Phaser.Scene {
     }
 
     update () {
-        if(this.getNow() > (this.lastDegrade + 5000) - (this.save - this.getNow)){
+        if(this.getNow() > (this.lastDegrade + 5000)){
             this.degrade();
             this.save = this.getNow()
         }

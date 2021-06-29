@@ -20,6 +20,7 @@ const config = {
     scene: [
         PreloadScene,
         TitleScene,
+        ChooseTamagachiScene,
         TamagachiScene,
         BattleScene
     ],
