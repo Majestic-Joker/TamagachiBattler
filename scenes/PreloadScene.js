@@ -92,6 +92,8 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('waterIcon', './assets/visual/icons/water.png');
         this.load.image('windIcon', './assets/visual/icons/wind.png');
         this.load.image('earthIcon', './assets/visual/icons/earth.png');
+
+        this.load.image('doorIcon', './assets/visual/icons/door.png');
         
         //loading placeholders
         this.load.image('fire', './assets/visual/monsters/fire.png');

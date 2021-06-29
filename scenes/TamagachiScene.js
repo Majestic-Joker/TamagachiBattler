@@ -1,6 +1,20 @@
 class TamagachiScene extends Phaser.Scene {
     constructor () {
         super ("TamagachiScene");
+
+        this.user = null;
+        this.homeBGM = null;
+        this.monsterData = null;
+        this.dataLoaded = false;
+        
+        //MonsterInfo stuff
+        this.maxHp = 10;
+        this.hp = 0;
+        this.level = 1;
+        this.name = 'Gary';
+        this.monsterImage = null;
+
+        //Tamagachi Stuff
         this.hunger = 100; 
         this.happiness = 100;
         this.clean = 100;
@@ -8,22 +22,14 @@ class TamagachiScene extends Phaser.Scene {
         this.careQuality = null;
         this.house = null;
         this.lastDegrade = 0;
-
         this.dragFoodIcon = null;
         this.dragCleanIcon = null;
         this.dragHappyIcon = null;
-
         this.statusBox = null;
-        this.maxHp = 10;
-        this.hp = 0;
-        this.level = 1;
-        this.name = 'Gary';
-
         this.hpValue = null;
         this.levelValue = null;
         this.nameValue = null;
         this.careQualityValue = null;
-
         this.hpText = null;
         this.levelText = null;
         this.nameText = null;
@@ -31,49 +37,42 @@ class TamagachiScene extends Phaser.Scene {
         this.hungerText = null;
         this.happinessText = null;
         this.cleanText = null;
-
         this.hungerValue = null;
         this.happinessValue = null;
         this.cleanValue = null;
+
+        //Firebase Stuff
+        this.fire = FireManager.get();
+        this.user = null;
+        this.database = firebase.firestore();
+        this.gameData = this.database.collection('gameData');
+
+        this.signals = SignalManager.get();
     }
 
-    update () {
-        if(this.getNow() > (this.lastDegrade + 5000)){
-            this.degrade();
-            this.save = this.getNow()
-            this.hpValue.setText(`${this.hp}`)
-        }
+    /*init(data){
+        this.monsterImage = data.image;
+    }*/
 
-        this.average = ((this.hunger + this.happiness + this.clean) / 3)
-        if (this.average > 75) {
-            this.careQuality = "Happy";
-        }
-        else if (this.average < 75 && this.average > 50) {
-            this.careQuality = "Content";
-        }
-        else if (this.average < 50 && this.average > 25) {
-            this.careQuality = "Sad";
-        }
-        else {
-            this.careQuality = "Dying";
-        }
-        this.careQualityValue.setText(`${this.careQuality}`);
+    preload(){
+        //load data
+        this.user = this.fire.user();
+        if(this.user){
+            this.loadFirebaseMonsterData();
 
-        this.updateBars();
-        if (this.dragFoodIcon){
-            this.dragFoodIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+            this.signals.on('data-loaded', () => {
+                this.signals.off('data-loaded');
+                this.setMonster(this.monsterData);  
+                this.dataLoaded = true;
+            });
         }
-        if (this.dragHappyIcon){
-            this.dragHappyIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
-        }
-        if (this.dragCleanIcon){
-            this.dragCleanIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
-        }
+        else
+            this.loadLocalMonsterData();
     }
 
     create () {
         //set audio
-        let homeBGM = this.sound.add("Home", {
+        this.homeBGM = this.sound.add("Home", {
             volume: .01,
             repeat: true
         });
@@ -94,7 +93,8 @@ class TamagachiScene extends Phaser.Scene {
         });
 
         //play audio
-        homeBGM.play();
+        this.homeBGM.play();
+
         // Create house
         this.house = this.add.image(225,400,'house')
         this.house.setScale(10)
@@ -105,7 +105,7 @@ class TamagachiScene extends Phaser.Scene {
         this.foodIcon.on('pointerdown', ()=> {
             if (this.hunger < 100) {
                 this.dragFoodIcon = this.physics.add.sprite(75, 60, 'food')
-                this.dragFoodIcon.setScale (2)
+                this.dragFoodIcon.setScale (4)
             }
             else{
                 errorSFX.play(); 
@@ -131,6 +131,7 @@ class TamagachiScene extends Phaser.Scene {
         this.happyIcon.on('pointerdown', ()=> {
             if (this.happiness < 100) {
                 this.dragHappyIcon = this.physics.add.sprite(175, 60, 'ball')
+                this.dragHappyIcon.setScale (2.5)
             }
             else{
                 errorSFX.play(); 
@@ -178,8 +179,9 @@ class TamagachiScene extends Phaser.Scene {
         this.battleIcon.setScale(4.5)
         this.battleIcon.setInteractive();
         this.battleIcon.on('pointerdown', ()=> {
-            homeBGM.stop();
-            this.scene.start("BattleScene")
+            this.homeBGM.stop();
+            this.updateMonsterData();
+            this.scene.start("BattleScene", this.monsterData);
         })
 
         // Create bars for hunger, cleanliness, happiness
@@ -218,7 +220,7 @@ class TamagachiScene extends Phaser.Scene {
             fontSize: '10px'
         });
 
-        this.monster = this.physics.add.sprite(225, 400, 'water')
+        this.monster = this.physics.add.sprite(225, 400, this.monsterImage)
         this.monster.setScale(15)
         this.monster.setInteractive();
 
@@ -263,6 +265,154 @@ class TamagachiScene extends Phaser.Scene {
             fontSize: '25px',
             color: 'black'
         })
+
+        //make a button for title scene
+        let titleBtn = this.add.image(50,325, 'doorIcon');
+        titleBtn.setOrigin(.5);
+        titleBtn.setScale(.1);
+        titleBtn.setInteractive();
+        titleBtn.on('pointerdown', () => {
+            this.homeBGM.stop();
+            if(this.user)
+                this.saveMonsterData(this.monsterData);
+            else
+                this.resetLocalMonsterData();
+
+            this.signals.on('data-saved', () => {
+                this.signals.off('data-saved');
+                this.scene.start("TitleScene");
+            });
+        });
+    }
+
+    update () {
+        //update the monster stuff once loaded in
+        if(this.dataLoaded){
+            this.dataLoaded = false;
+            if(this.monsterImage)
+                this.monster.setTexture(this.monsterImage);
+            this.monster.setScale(15)
+            this.monster.setInteractive()
+            this.hpValue.setText(`${this.hp}/${this.maxHp}`)
+            this.nameValue.setText(`${this.name}`)
+            this.levelValue.setText(`${this.level}`)
+        }
+
+        if(this.getNow() > (this.lastDegrade + 5000)){
+            this.degrade();
+            this.save = this.getNow()
+            this.hpValue.setText(`${this.hp}/${this.maxHp}`)
+        }
+
+        this.average = ((this.hunger + this.happiness + this.clean) / 3)
+        if (this.average > 75) {
+            this.careQuality = "Happy";
+        }
+        else if (this.average < 75 && this.average > 50) {
+            this.careQuality = "Content";
+        }
+        else if (this.average < 50 && this.average > 25) {
+            this.careQuality = "Sad";
+        }
+        else {
+            this.careQuality = "Dying";
+        }
+        this.careQualityValue.setText(`${this.careQuality}`);
+
+        this.updateBars();
+        if (this.dragFoodIcon){
+            this.dragFoodIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+        }
+        if (this.dragHappyIcon){
+            this.dragHappyIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+        }
+        if (this.dragCleanIcon){
+            this.dragCleanIcon.setPosition(this.input.activePointer.x, this.input.activePointer.y)
+        }
+    }
+
+    //set monster data
+    setMonster(monster){
+        this.name = monster.name;
+        this.maxHp = monster.hp;
+        this.hp = monster.chp;
+        this.level = monster.level;
+        this.monsterImage = monster.image;
+        this.happiness = monster.happiness;
+        this.clean = monster.cleanliness;
+        this.hunger = monster.hunger;
+    }
+
+    loadLocalMonsterData(){
+        const monsterData = loadObjectFromLocal();
+        // Check if data was loaded correctly
+        if (monsterData) {
+            this.monsterData = monsterData;
+        } else {
+            console.log('Failed to load monster data from cache.');
+        }
+    }
+
+    //reset data back to null
+    resetLocalMonsterData() {
+        const data = {
+            monster: null
+        };
+        // Save the reset values
+        saveObjectToLocal(data);
+    }
+
+    async loadFirebaseMonsterData() {
+        //document reference
+        const docRef = await this.gameData.doc(this.user.uid);
+        
+        //docSnapshot
+        const docSnap = await docRef.get();
+
+        this.monsterData = docSnap.data().monster;
+
+        console.log(this.monsterData);
+        //fires event on completion
+        this.signals.emit('data-loaded');
+    }
+
+    async saveMonsterData() {
+        console.log(this.monsterData);
+
+        this.updateMonsterData();
+
+        if(this.user != null){
+            //document reference
+            const docRef = await this.gameData.doc(this.user.uid);
+        
+            //docSnapshot
+            const docSnap = await docRef.get();
+
+            docRef.set({
+                monster: this.monsterData
+            });
+        }
+        else{
+            const data = {
+                monster: this.monsterData,
+                lastPlayed: this.getNow()
+            };
+            saveObjectToLocal(data);
+        }
+
+        this.monsterData = null;
+
+        this.signals.emit('data-saved');
+    }
+
+    updateMonsterData(){
+        this.monsterData.hp = this.maxHp;
+        this.monsterData.chp = this.hp;
+        this.monsterData.level = this.level;
+        this.monsterData.happiness = this.happiness;
+        this.monsterData.cleanliness = this.clean;
+        this.monsterData.hunger = this.hunger;
+        this.monsterData.careQuality = this.careQualityValue.text;
     }
 
     degrade () {
@@ -321,15 +471,4 @@ class TamagachiScene extends Phaser.Scene {
         this.cleanBar.setScale(this.clean / 100, 1)
         this.cleanValue.setText(`${this.clean}`);
     }    
-
-    load() {
-
-    }
-
-    careQualityfunc () {
-        
-    }
-
-
-
 }

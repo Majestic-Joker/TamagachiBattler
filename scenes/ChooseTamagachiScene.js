@@ -8,17 +8,17 @@ class ChooseTamagachiScene extends Phaser.Scene {
         this.earthStarter = null;
 
         //Firebase Stuff
-        this.fire = FireManager.get();
+        this.fire = null;
         this.user = null;
         this.database = firebase.firestore();
         this.gameData = this.database.collection('gameData');
 
-        this.signals = SignalManager.get();
+        this.signals = null;
     }
 
     preload(){
-        this.user = this.fire.user();
-        this.loadMonsterData();
+        this.fire = FireManager.get();
+        this.signals = SignalManager.get();
     }
 
     create() {
@@ -30,16 +30,17 @@ class ChooseTamagachiScene extends Phaser.Scene {
         });
         promptText.setOrigin(0.5);
 
-        this.signals.on('data-loaded', () => {
-            this.signals.off('data-loaded');  
-            if(this.user != null){
-                this.monster = this.loadMonsterData();
-                console.log(this.monster);
+        this.user = this.fire.user();
+        if(this.user){
+            this.loadMonsterData();
+
+            this.signals.on('data-loaded', () => {
+                this.signals.off('data-loaded');  
                 this.selectMonster(false);
-            }
-            else
-                this.selectMonster(true);
-        });
+            });
+        }
+        else
+        this.selectMonster(true);
     }
 
     selectMonster(isGuest){
@@ -51,7 +52,10 @@ class ChooseTamagachiScene extends Phaser.Scene {
             this.fireStarter.on('pointerdown', ()=> {
                 this.monster = MONSTERS[0];
                 this.saveData(this.monster);
-                this.scene.start("TamagachiScene")
+                this.signals.on('data-saved', () => {
+                    this.signals.off('data-saved');
+                    this.scene.start("TamagachiScene");
+                });
             })
             this.waterStarter = this.add.image(350,360, 'water');
             this.waterStarter.setScale(10)
@@ -59,7 +63,10 @@ class ChooseTamagachiScene extends Phaser.Scene {
             this.waterStarter.on('pointerdown', ()=> {
                 this.monster = MONSTERS[3];
                 this.saveData(this.monster);
-                this.scene.start("TamagachiScene")
+                this.signals.on('data-saved', () => {
+                    this.signals.off('data-saved');
+                    this.scene.start("TamagachiScene");
+                });
             })
             this.earthStarter = this.add.image(100,550, 'earth');
             this.earthStarter.setScale(10)
@@ -67,7 +74,10 @@ class ChooseTamagachiScene extends Phaser.Scene {
             this.earthStarter.on('pointerdown', ()=> {
                 this.monster = MONSTERS[1];
                 this.saveData(this.monster);
-                this.scene.start("TamagachiScene")
+                this.signals.on('data-saved', () => {
+                    this.signals.off('data-saved');
+                    this.scene.start("TamagachiScene");
+                });
             })
                 this.windStarter = this.add.image(310,620, 'wind');
                 this.windStarter.setScale(10)
@@ -75,11 +85,14 @@ class ChooseTamagachiScene extends Phaser.Scene {
                 this.windStarter.on('pointerdown', ()=> {
                     this.monster = MONSTERS[2];
                     this.saveData(this.monster);
-                    this.scene.start("TamagachiScene")
+                    this.signals.on('data-saved', () => {
+                        this.signals.off('data-saved');
+                        this.scene.start("TamagachiScene");
+                    });
                 })
             }
             else {
-                this.scene.start("TamagachiScene")
+                this.scene.start("TamagachiScene");
             }
         }
 
@@ -90,17 +103,18 @@ class ChooseTamagachiScene extends Phaser.Scene {
             //docSnapshot
             const docSnap = await docRef.get();
 
-            this.monster = docSnap.data().monster;
-            
-            //console.log(this.gameData.doc(this.user.uid).get().get().monster);
+            if(docSnap.exists)
+                this.monster = docSnap.data().monster;
+
             this.signals.emit('data-loaded');
         }
     
-        saveData(monster) {
-            let user = this.fire.user();
+        async saveData(monster) {
+            this.user = this.fire.user();
 
-            if(user != null){
-                this.gameData.doc(user.uid).set({
+            if(this.user != null){
+
+                await this.gameData.doc(this.user.uid).set({
                     monster: monster
                 });
             }
@@ -111,22 +125,10 @@ class ChooseTamagachiScene extends Phaser.Scene {
                 };
             saveObjectToLocal(data);
             }
-        }
-    
-        //reset data back to 0
-        resetData() {
-            // Start out with no souls
-            this.souls = 0;
-            // Start at stage 0
-            this.stage = 1;
-            // Starting upgrade levels
-            this.levels = {
-                sword: 0,
-                thunder: 0,
-                fire: 0
-            }
-            // Save the reset values
-            this.saveData();
+
+            this.monster = null;
+            
+            this.signals.emit('data-saved');
         }
     
         //get current time

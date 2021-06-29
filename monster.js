@@ -42,7 +42,9 @@ const MONSTERS = [
 
         //visible stuff
         level: 1,
+        xp: 0,
         hp: 10,
+        chp: 10,
         energy: 9,
         attack: 4,
         defense: 5,
@@ -60,6 +62,10 @@ const MONSTERS = [
         growthElementalAttack: 5,
         growthElementalDefense: 5,
         growthSpeed: 2,
+        happiness: 100,
+        cleanliness: 100,
+        hunger: 100,
+        careQuality: "Happy",
 
         //move stuff
         move1: 1,
@@ -75,7 +81,9 @@ const MONSTERS = [
 
         //visible stuff
         level: 1,
+        xp: 0,
         hp: 8,
+        chp: 8,
         energy: 7,
         attack: 9,
         defense: 8,
@@ -93,6 +101,10 @@ const MONSTERS = [
         growthElementalAttack: 2,
         growthElementalDefense: 3,
         growthSpeed: 2,
+        happiness: 100,
+        cleanliness: 100,
+        hunger: 100,
+        careQuality: "Happy",
 
         //move stuff
         move1: 2,
@@ -108,7 +120,9 @@ const MONSTERS = [
 
         //visible stuff
         level: 1,
+        xp: 0,
         hp: 7,
+        chp: 7,
         energy: 8,
         attack: 3,
         defense: 5,
@@ -126,6 +140,10 @@ const MONSTERS = [
         growthElementalAttack: 5,
         growthElementalDefense: 2,
         growthSpeed: 5,
+        happiness: 100,
+        cleanliness: 100,
+        hunger: 100,
+        careQuality: "Happy",
 
         //move stuff
         move1: 3,
@@ -141,7 +159,9 @@ const MONSTERS = [
 
         //visible stuff
         level: 1,
+        xp: 0,
         hp: 10,
+        chp: 10,
         energy: 6,
         attack: 6,
         defense: 4,
@@ -159,6 +179,10 @@ const MONSTERS = [
         growthElementalAttack: 4,
         growthElementalAttack: 5,
         growthSpeed: 3,
+        happiness: 100,
+        cleanliness: 100,
+        hunger: 100,
+        careQuality: "Happy",
 
         //move stuff
         move1: 4,

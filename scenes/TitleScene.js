@@ -91,7 +91,6 @@ class TitleScene extends Phaser.Scene {
         tamaBtn.on('pointerdown', () => {
             selectSFX.play();
             bgm.stop();
-            //this.scene.start("TamagachiScene")
             this.scene.start("ChooseTamagachiScene")
         });
 
