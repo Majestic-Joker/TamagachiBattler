@@ -2,6 +2,10 @@ class TitleScene extends Phaser.Scene {
     constructor(){
         super('TitleScene');
         this.parallax = []
+        this.fire = FireManager.get();
+        this.googleBtn = null;
+        this.soBtn = null;
+        this.database = firebase.firestore();
     }
 
 
@@ -90,12 +94,56 @@ class TitleScene extends Phaser.Scene {
             //this.scene.start("TamagachiScene")
             this.scene.start("ChooseTamagachiScene")
         });
+
+        // Create the google button
+        this.googleBtn = this.add.image(225, 500, 'google')
+            .setScale(1.5)
+            .setInteractive()
+            .setAlpha(0)
+            .on('pointerdown', () => {
+                try {
+                    this.login();
+                }
+                catch (e) {
+                    console.log(`Failed to sign in: ${e}`);
+                }
+            });
+        // Create a sign out button
+        this.soBtn = this.add.rectangle(20, 20, 30, 30, 0x0000FF);
+        this.soBtn.setInteractive().setAlpha(0);
+        this.soBtn.on('pointerdown', () => {
+            this.logout();
+        });
     }
 
     update() {
         for(let i = 0; i < 7; i++){
             this.parallax[i].tilePositionX -= (i/3);
         }
+
+        if (this.fire.user() != null) {
+            this.googleBtn.setAlpha(0);
+            this.soBtn.setAlpha(1);
+        }
+        else {
+            this.googleBtn.setAlpha(1);
+            this.soBtn.setAlpha(0);
+        }
+    }
+
+    async login() {
+        let user = await this.fire.signInWithGoogle();
+        if (user != null) {
+            this.userTable.doc(user.uid).set({
+                lastLogin: new Date().getTime() / 1000
+            });
+        }
+        console.log(await this.fire.user());
+    }
+
+    async logout() {
+        await this.fire.signOut();
+        console.log(await this.fire.user());
     }
 
 }

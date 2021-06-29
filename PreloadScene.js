@@ -69,6 +69,7 @@ class PreloadScene extends Phaser.Scene {
 
         //load graphics
         //EXAMPLE: this.load.image('bg', './assets/visual/bg/pBG1.png');
+        this.load.image('google', './assets/visual/gui/google.png');
         this.load.image('battleBG-cave', './assets/visual/bg/caveBG.png');
         this.load.image('Bar-Underlay', './assets/visual/gui/barUnderlay.png');
         this.load.image('Bar-HP', './assets/visual/gui/barHealth.png');
