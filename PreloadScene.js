@@ -81,6 +81,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('battleIcon', './assets/visual/gui/TamagachiIcons/battleIcon.png');
         this.load.image('food', './assets/visual/gui/Apple.png');
         this.load.image('soap', './assets/visual/gui/soap.png');
+        this.load.image('ball', './assets/visual/gui/Ball.png');
         
         this.load.image('fistIcon', './assets/visual/icons/fist.png');
         this.load.image('fireIcon', './assets/visual/icons/fire.png');
