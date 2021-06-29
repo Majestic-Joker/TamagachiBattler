@@ -72,6 +72,7 @@ class TamagachiScene extends Phaser.Scene {
         this.foodIcon.on('pointerdown', ()=> {
             if (this.hunger < 100) {
                 this.dragFoodIcon = this.physics.add.sprite(75, 60, 'food')
+                this.dragFoodIcon.setScale (2)
             }
             else{
                 errorSFX.play(); 
