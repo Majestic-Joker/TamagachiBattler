@@ -63,11 +63,19 @@ class BattleScene extends Phaser.Scene {
 
     //pulls monster data from the previous scene
     init(data){
+        if(this.playerMonster)
+            this.playerMonster = null;
+
         this.playerMonster = data;
     }
 
     //shouldn't need this for images/audio
     preload(){
+        if(!this.moveResolve)
+            this.moveResolved = true;
+
+        if(this.enemyMonster)
+            this.enemyMonter = null;
     }
 
     create(){
@@ -98,25 +106,6 @@ class BattleScene extends Phaser.Scene {
             
     }
 
-    loadLocalMonsterData(){
-        const monsterData = loadObjectFromLocal();
-        // Check if data was loaded correctly
-        if (monsterData) {
-            this.playerMonster = monsterData;
-        } else {
-            console.log('Failed to load monster data from cache.');
-        }
-    }
-
-    //reset data back to null
-    resetLocalMonsterData() {
-        const data = {
-            monster: null
-        };
-        // Save the reset values
-        saveObjectToLocal(data);
-    }
-
     async loadFirebaseMonsterData() {
         //document reference
         const docRef = await this.gameData.doc(this.user.uid);
@@ -132,15 +121,10 @@ class BattleScene extends Phaser.Scene {
     }
 
     async saveMonsterData() {
-        console.log(this.monsterData);
+        console.log(this.playerMonster);
 
-        this.monsterData.hp = this.maxHp;
-        this.monsterData.chp = this.hp;
-        this.monsterData.level = this.level;
-        this.monsterData.happiness = this.happiness;
-        this.monsterData.cleanliness = this.clean;
-        this.monsterData.hunger = this.hunger;
-        this.monsterData.careQuality = this.careQualityValue.text;
+        this.playerMonster.hp = this.playerMaxHP;
+        this.playerMonster.chp = this.playerCurrentHP;
 
         if(this.user != null){
             //document reference
@@ -150,19 +134,9 @@ class BattleScene extends Phaser.Scene {
             const docSnap = await docRef.get();
 
             docRef.set({
-                monster: this.monsterData
+                monster: this.playerMonster
             });
         }
-        else{
-            const data = {
-                monster: this.monsterData,
-                lastPlayed: this.getNow()
-            };
-            saveObjectToLocal(data);
-        }
-
-        this.monsterData = null;
-
         this.signals.emit('data-saved');
     }
 
@@ -427,6 +401,7 @@ class BattleScene extends Phaser.Scene {
             duration: 500,
             scaleX: (this.playerCurrentEnergy/this.playerMaxEnergy)*.84,
             onComplete: ()=>{
+                this.updateVisualInfo();
                 //damage enemy
                 this.damageEnemy(move.damage, move.element);
                 //update enemy health bar
@@ -436,6 +411,7 @@ class BattleScene extends Phaser.Scene {
                     duration: 500,
                     scaleX: (this.enemyCurrentHP/this.enemyMaxHP)*.84,
                     onComplete: () => {
+                        this.updateVisualInfo();
                         //check if enemy dead
                         if(this.enemyCurrentHP > 0){
                             //enemy alive
@@ -448,6 +424,7 @@ class BattleScene extends Phaser.Scene {
                                 duration: 500,
                                 scaleX: (this.enemyCurrentEnergy/this.enemyMaxEnergy)*.84,
                                 onComplete: ()=>{
+                                    this.updateVisualInfo();
                                     //damage player
                                     this.damagePlayer(enemySelection.damage, enemySelection.element);
                                     //update player health bar
@@ -457,6 +434,7 @@ class BattleScene extends Phaser.Scene {
                                         duration: 500,
                                         scaleX: (this.playerCurrentHP/this.playerMaxHP)*.84,
                                         onComplete: ()=>{
+                                            this.updateVisualInfo();
                                             //check if player dead
                                             if(this.playerCurrentHP > 0){
                                             //player alive
@@ -519,6 +497,7 @@ class BattleScene extends Phaser.Scene {
         this.playerMonster.level++;
 
         //update new stats
+        this.playerMonster.xp = 0;
         this.playerMonster.hp += this.playerMonster.growthHp;
         this.playerMonster.chp = this.playerMonster.hp;
         this.playerMonster.energy += this.playerMonster.growthEnergy;
@@ -539,30 +518,28 @@ class BattleScene extends Phaser.Scene {
     }
 
     updateVisualInfo(){
-        if(this.enemyCurrentHP < 0)
+        if(this.enemyCurrentHP < 0){
             this.enemyCurrentHP = 0;
+            this.enemyHealthBar.setScale((this.enemyCurrentHP/this.enemyMaxHP)*.84,.25);
+        }
 
-        this.enemyHealthBar.setScale((this.enemyCurrentHP/this.enemyMaxHP)*.84,.25);
-        this.enemyEnergyBar.setScale((this.enemyCurrentEnergy/this.enemyMaxEnergy)*.84,.25);
-        this.playerHealthBar.setScale((this.playerCurrentHP/this.playerMaxHP)*.84,.25);
-        this.playerEnergyBar.setScale((this.playerCurrentEnergy/this.playerMaxEnergy)*.84,.25);
+        if(this.enemyCurrentEnergy < 0){
+            this.enemyCurrentEnergy = 0;
+            this.enemyEnergyBar.setScale((this.enemyCurrentEnergy/this.enemyMaxEnergy)*.84,.25);
+        }
+        
+        if(this.playerCurrentHP < 0){
+            this.playerCurrentHP = 0;
+            this.playerHealthBar.setScale((this.playerCurrentHP/this.playerMaxHP)*.84,.25);
+        }
+
+        if(this.playerCurrentEnergy < 0){
+            this.playerCurrentEnergy = 0;
+            this.playerEnergyBar.setScale((this.playerCurrentEnergy/this.playerMaxEnergy)*.84,.25);
+        }
+        
         this.playerHealthText.setText(`${this.playerCurrentHP}/${this.playerMaxHP}`);
         this.playerEnergyText.setText(`${this.playerCurrentEnergy}/${this.playerMaxEnergy}`);
-
-        if(this.playerCurrentHP <= 0){
-            this.battleBGM.stop();
-            this.scene.start("TitleScene");
-        }
-        else if(this.enemyCurrentHP <= 0){
-            this.battleBGM.stop();
-            this.scene.start("TamagachiScene");
-        }
-
-        if(this.playerCurrentEnergy <= 0)
-            this.playerCurrentEnergy = 0;
-
-        if(this.enemyCurrentEnergy <= 0)
-            this.enemyCurrentEnergy = 0;
     }
 
     damageEnemy(value, element){
